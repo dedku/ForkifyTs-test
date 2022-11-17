@@ -24,8 +24,6 @@ type ingridientsType = {
   unit: string,
   description: string,
 }
-const FORKIFY_LINK = `https://forkify-api.herokuapp.com/api/v2/recipes/5ed6604591c37cdc054bc886?key=${import.meta.env.FORKIFY_API_KEY}`
-
 
 const recipeContainer = document.querySelector('.recipe') as HTMLBodyElement
 
@@ -41,12 +39,15 @@ const renderSpinner = function (parentEl: HTMLBodyElement): void {
   parentEl.insertAdjacentHTML('afterbegin', markup)
 }
 
-const showRecipe = async function (link: string): Promise<void> {
+const showRecipe = async function (): Promise<void> {
   try {
+    const hashId = window.location.hash.slice(1)
+    if (!hashId) return
+
     // 1. Load recipe
     renderSpinner(recipeContainer)
 
-    const res: Response = await fetch(link)
+    const res: Response = await fetch(`https://forkify-api.herokuapp.com/api/v2/recipes/${hashId}?key=${import.meta.env.FORKIFY_API_KEY}`)
 
     const data: resDataType = await res.json()
 
@@ -147,8 +148,8 @@ const showRecipe = async function (link: string): Promise<void> {
   } catch (err) {
     throw (err)
   }
-}
+};
 
-showRecipe(FORKIFY_LINK)
+['hashchange', 'load'].map(element => window.addEventListener(element, showRecipe))
 
-export { FORKIFY_LINK, showRecipe, renderSpinner, recipeContainer }
+export { showRecipe, renderSpinner, recipeContainer }
