@@ -27,16 +27,16 @@ type ingridientsType = {
 
 const recipeContainer = document.querySelector('.recipe') as HTMLBodyElement
 
-const renderSpinner = function (parentEl: HTMLBodyElement): void {
+function renderSpinner(parentEl: HTMLBodyElement): void {
   const markup = `
   <div class="spinner">
     <svg>
       <use href="src/img/icons.svg#icon-loader"></use>
     </svg>
   </div>`
-
   parentEl.innerHTML = ''
   parentEl.insertAdjacentHTML('afterbegin', markup)
+
 }
 
 const showRecipe = async function (): Promise<void> {
